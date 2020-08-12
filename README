@@ -1,0 +1,41 @@
+Author: Anjan Dave
+#Version: 1.1
+
+Disclaimer:
+Everything provided in this git repository is for non-production use. It's provided as-is, use it for getting the DellEMC Isilon CSI Driver installed and then run some tests. The goal of the script is to allow you to focus on the tests and not on the underlying docker/k8s functionality.
+
+Pre-requisites for running the scripts:
+----------------------------------------
+1. Have a RHEL or CentOS 7.7 (7.x should be fine i have not tested other versions) with full install - i.e., install GNOME Desktop version with dev tools, admin tools, etc installed
+2. If it's going to be a VM, make sure you have 3GB memory and 2 CPUs minimum allocated
+3. Have an Isilon cluster ready (real or virtual), OneFS version doesn't matter, but anything above 8.x would be good
+4. Some kubernetes background would help if the script doesn't work for you as intended!
+5. Install the components - docker, k8s, and CSI Driver in that order
+6. All this is valid for the Isilon CSI Driver 1.0 version
+
+There are three scripts provided here:
+1. docker_install.sh
+This script installs latest version of docker on the provided Linux host
+2. install_k8s_1.16.sh
+This script will install the Kubernetes 1.16.12 version for you which is what the Isilon CSI Driver currently supports
+3. install_Isilon_CSI_Driver_1.2.sh
+This script will clone all the necessary configuration files for kubernetes/docker, modify anything we need to, and setup a bunch of things, and then lastly will install the CSI Driver
+
+Note - there's no uninstall of the docker and kubernetes scripts. The Isilon CSI Driver installation script (install.isilon) is called upon by the install_Isilon_CSI_Driver_1.2.sh script. The driver can be uninstalled using the provided uninstall.isilon script.
+
+In essense, these three scripts will prepare your environment to get the Isilon CSI driver installed. I install the driver for you in the end as a convenience so it's all done together.
+
+Procedure:
+--------------
+Login as root to your CentOS/RHEL 7.7 VM host
+cd /root
+git clone https://github.com/acd13/IsilonCSIDriver_Env_Installation.git
+cd IsilonCSIDriver_Env_Installation
+cp *.sh /root/
+./docker_install.sh (it's interactive script, complete it to get docker working)
+./install_k8s_1.16.sh (it's interactive script, compleete it to get kubernetes master node working at 1.16.12)
+./install_Isilon_CSI_Driver_1.2.sh (it's interactive script, complete it to get the driver working)
+
+Follow the official DellEMC Isilon CSI Driver 1.2 documentation at: https://github.com/dell/csi-isilon to download the offical installation guide.
+
+
