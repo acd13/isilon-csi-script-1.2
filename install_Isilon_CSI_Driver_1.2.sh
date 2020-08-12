@@ -66,6 +66,7 @@ then
 	sleep 6
 else
 	git clone https://github.com/acd13/isilon-csi-script-1.2.git
+	mv /root/isilon-csi-script-1.2 /root/isilon-csi-script
 	printf "\nCheck below if /root has the csi-files dir\n"
 	ls /root
 	sleep 5
@@ -152,7 +153,7 @@ then
 		./get_helm.sh
 		sleep 5
 		printf "\nNow initializing helm using helm init...\n"
-		helm init
+		/usr/local/bin/helm init
 	fi
 else
 exit 0
@@ -213,7 +214,7 @@ else
 	kubectl create -f /root/isilon-csi-script/csi-files/rbac-config.yaml
 	sleep 8
 	printf "\nNext, we need to apply the tiller service account to tiller pod \n"
-	helm init --upgrade --service-account tiller
+	/usr/local/bin/helm init --upgrade --service-account tiller
 fi
 
 printf "\nNext, we create the isilon & the test namespace in the k8s cluster \n"
@@ -293,7 +294,7 @@ chmod 755 /root/csi-isilon/helm/verify.kubernetes
 echo "----------------------------------------------------------------------"
 printf "\nNext, we run the verify.kubernetes script
 Make sure you supply the root password of THIS host, it will ask twice
-You must get a successful verification message prior to installing the CSI Driver PODs \n"
+You should get a successful verification message prior to installing the CSI Driver PODs \n"
 echo "----------------------------------------------------------------------"
 echo ""
 sh /root/csi-isilon/helm/verify.kubernetes
